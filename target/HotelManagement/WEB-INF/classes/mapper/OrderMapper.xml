@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.fox.dao.OrderMapper">
+    <select id="queryOrder" parameterType="String" resultType="org.fox.entity.Order">
+		select
+		order_no,
+		order_price,
+		user_name,
+		order_idcard,
+		phone,
+		order_createtime,
+		live_time,
+		leave_time,
+		person_count,
+		order_status,
+		order_other,
+		order_user,
+		room_no
+		from tb_order
+		where order_no = #{orderNo}
+	</select>
+
+	<select id="queryUserOrder" parameterType="int" resultType="org.fox.entity.Order">
+		select
+		order_no,
+		order_price,
+		user_name,
+		order_idcard,
+		phone,
+		order_createtime,
+		live_time,
+		leave_time,
+		person_count,
+		order_status,
+		order_other,
+		order_user,
+		room_no
+		from tb_order
+		where order_user = #{orderUser}
+	</select>
+
+	<insert id="insertUserOrder" parameterType="org.fox.entity.Order">
+		insert into
+		tb_order(
+			order_no,
+			order_price,
+			user_name,
+			order_idcard,
+			phone,
+			live_time,
+			leave_time,
+			person_count,
+			order_createtime,
+			order_status,
+			order_other,
+			order_user,
+			room_no
+		)
+		values(
+			#{orderNo},#{orderPrice},#{UserName},
+			#{orderIdCard},#{phone},#{liveTime},
+			#{leaveTime},#{personCount},#{orderCreatetime},
+			#{orderStatus},#{orderOther},#{orderUser},
+			#{roomNo}
+		)
+	</insert>
+	<delete id="deleteOrder" parameterType="int">
+		delete from
+		tb_order
+		where order_no = #{orderNo}
+	</delete>
+</mapper>
+
+

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.fox.dao.RoomMapper">
+	<select id="queryRoomList" parameterType="int" resultType="org.fox.entity.Room">
+		select
+		room_no,
+		room_category_id,
+		room_status,
+		user_id,
+		room_other
+		from tb_room
+		where room_category_id = #{roomCategoryId}
+	</select>
+
+	<insert id="insertRoom" parameterType="org.fox.entity.Room">
+		insert into tb_room(
+		room_no,
+		room_category_id,
+		room_status
+		)
+		values (
+		#{roomNo},#{roomCategoryId},#{roomStatus}
+		)
+	</insert>
+
+	<select id="queryRoom" parameterType="String" resultType="org.fox.entity.Room">
+		select
+		room_no,
+		room_category_id,
+		room_status,
+		user_id,
+		room_other
+		from tb_room
+		where room_no = #{roomNo}
+	</select>
+
+	<update id="updateRoom" parameterType="org.fox.entity.Room">
+		update tb_room
+		<set>
+			<if test="roomCategoryId!=null">room_category_id = #{roomCategoryId},</if>
+			<if test="roomStatus!=null">room_status = #{roomStatus},</if>
+			<if test="userId!=null">user_id = #{userId},</if>
+			<if test="roomOther!=null">room_other = #{roomOther}</if>
+		</set>
+		where room_no = #{roomNo}
+	</update>
+</mapper>
+
+

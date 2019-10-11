@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.fox.dao.CategoryMapper">
+	<insert id="InsertCategory" parameterType="org.fox.entity.Category" >
+		insert
+		into tb_category(
+		room_category,
+		room_img,
+		room_desc,
+		room_count
+		)
+		values(
+		#{room_category},#{roomImg},
+		#{roomDesc},#{roomCount}
+		)
+	</insert>
+
+	<delete id="DeleteCategory" parameterType="int">
+
+	</delete>
+
+	<update id="UpdateCategory" parameterType="org.fox.entity.Category" >
+
+	</update>
+
+    <select id="SerachCategory" parameterType="int" resultType="org.fox.entity.Category">
+		select
+		room_category_id,
+		room_category,
+		room_img,
+		room_desc,
+		room_count,
+		room_price
+		from tb_category
+		where room_category_id = #{roonmCategoryId}
+	</select>
+
+	<select id="SerachAllCategory" resultType="org.fox.entity.Category">
+		select
+		room_category_id,
+		room_category,
+		room_img,
+		room_desc,
+		room_count,
+		room_price
+		from tb_category
+	</select>
+
+	<select id="SerachAllImg" resultType="String">
+		select
+		room_img
+		from tb_category
+	</select>
+
+	<select id="SearchRoomCount" parameterType="int" resultType="int">
+	</select>
+
+
+</mapper>
+
+

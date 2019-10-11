@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>改造的品牌列表案列</title>
+	<meta charset="utf-8"> 
+	<!--1.导入Vue包  -->
+	<script type="text/javascript" src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"/>
+</head>
+<body>
+	<div id="app">
+		
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">添加品牌</h3>
+			</div>
+			<div class="panel-body form-inline">
+				<label>
+					Name:
+					<input type="text" class="form-control" v-model="name"/>
+				</label>
+				<!-- 在Vue中使用事件绑定，为元素只当处理函数的时候，如果加上小括号，则可以加上参数 -->
+				<input type="button" value="添加" class="btn btn-primary" @click="add"/>
+			</div>
+		</div>
+			
+		
+		<table class="table table-bordered table-hover table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Ctime</th>
+					<th>Operation</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="item in list" :key="item.id">
+					<td>{{item.id}}</td>
+					<td>{{item.name}}</td>
+					<td>{{item.ctime}}</td>
+					<td><a href="" @click.prevent="del(item.id)">删除</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<input type="file"/>
+		<button @click="goUpload">上传</button>
+	</div>
+	<script>
+		//设置全局根路径
+		//Vue.http.options.root = "http://www.liulongbin.top:3005/";
+		//配置启用全局emulateJSON选项
+		//Vue.http.options.emulateJSON = true;
+
+		Vue.prototype.$axios = axios;
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				name:'',
+				file:'',
+				list:[
+					{id:1,name:'宝马',ctime:new Date()},
+					{id:2,name:'雪佛兰',ctime:new Date()},
+					{id:3,name:'玛莎拉蒂',ctime:new Date()}
+				]
+			},
+			created() {
+				//当vm实例的data和methods初始化完毕后,vm实例会自动执行created这个生命周期函数
+				this.getList()
+			},
+
+			methods:{
+				add(){
+					//设置以哪种表单数据类型提交给服务器{emulateJSON:true}
+					axios({
+						method:'POST',
+						url:'http://www.liulongbin.top:3005/api/addproduct',
+						data:{
+							name:this.name
+						}
+					}).then(result =>{
+						if(result.data.status == 0){
+							alert("添加成功");
+						}else{
+							alert("添加失败");
+						}
+					})
+
+
+				},
+				getList(){
+					axios({
+						method:'GET',
+						url:'http://www.liulongbin.top:3005/api/getprodlist/'
+					}).then(result =>{
+						if(result.data.status == 0){
+							this.list =  result.data.message;
+						}else{
+							alert("请求数据失败！");
+						}
+					})
+				},
+				del(id){
+					axios({
+						method:'GET',
+						url:'http://www.liulongbin.top:3005/api/delproduct/',
+						data:{
+							params:{
+								id:id
+							}
+						}
+					}).then(result =>{
+						if(result.body.status == 0){
+							alert("删除成功！")
+						}else{
+							alert("删除失败！")
+						}
+					})
+				},
+				goUpload: () => {
+					let file = document.querySelector('input[type=file]').files[0];
+					let formData = new FormData();
+					formData.append('file', file);
+					axios({
+						method: "POST",
+						url: "http://10.35.11.18:8080/Hotel/roomcategory/roomlist",
+						headers: {
+							'Content-Type': 'multipart/form-data'
+						},
+						data: formData
+					}).then((result) => {
+						 alert(result.data.message);
+					})
+				}
+			}
+		})
+		/*result:获取的结果是一个对象
+		* data：从服务器获取的响应主体内容
+		* headers：从服务器获取的响应的头信息
+		* request：创建的AJAX实例
+		* status：状态码
+		* statusText：状态码的描述
+		* config：基于AxIOS发送请求的时候做的配置项*/
+	</script>
+</body>
+</html>
+
+
+
+
+
+

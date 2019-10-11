@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.fox.dao.UserMapper">
+	<insert id="addUser" parameterType="org.fox.entity.User">
+		insert into tb_user(user_name,password,sex,age,email) values(#{username},#{password},#{sex},#{age},#{email})
+	</insert>
+
+	<select id="queryUser" parameterType="String" resultType="org.fox.entity.User">
+		select
+		user_id,
+		user_name,
+		password,
+		sex,
+		age,
+		email,
+		phone
+		from tb_user
+		where user_name = #{username}
+	</select>
+
+	<update id="updateUser" parameterType="org.fox.entity.User">
+		update tb_user
+		<set>
+			<if test="username!=null">user_name = #{username},</if>
+			<if test="password!=null">password = #{password},</if>
+			<if test="sex!=null">sex = #{sex},</if>
+			<if test="age!=null">age = #{age},</if>
+			<if test="email!=null">email = #{email},</if>
+			<if test="phone!=null">phone = #{phone}</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+</mapper>
+
+

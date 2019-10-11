@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>登录</title>
+    <meta charset="utf-8">
+    <!--1.导入Vue包  -->
+    <script type="text/javascript" src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"/>
+</head>
+<body>
+<div id="app">
+    <div class="login">
+        <form class="mui-input-group">
+            <div class="headimg">
+                <div class="mui-icon mui-icon-person"></div>
+            </div>
+            <div class="mui-input-row">
+                <label>用户名</label>
+                <input type="text" class="mui-input-clear" placeholder="请输入用户名" v-model="username">
+            </div>
+            <div class="mui-input-row">
+                <label>密码</label>
+                <input type="password" class="mui-input-password mui-input-clear" placeholder="请输入密码" v-model="password">
+            </div>
+            <div class="mui-input-row">
+                <label>验证码</label>
+                <input type="text" class=" mui-input-clear" placeholder="请输入验证码" v-model="code">
+            </div>
+            <div class="" id="submit-button">
+                <button type="button" class="mui-btn mui-btn-primary" @click="login">确认</button>
+            </div>
+        </form>
+        <a href="/Hotel/fox/order">查看订单</a>
+    </div>
+</div>
+<script>
+    Vue.prototype.$axios = axios;
+    var vm = new Vue({
+        el:"#app",
+        data:{
+            username:'',
+            password:'',
+            code:''
+        },
+        methods: {
+            login(){
+                axios.defaults.headers = {
+                    "Content-Type": "application/x-www-form-urlencoded;charset=gbk"
+                },
+                axios.get('http://localhost:8080/Hotel/user/login',{
+                    params:{
+                        username:this.username,
+                        password:this.password,
+                    }
+                }).then(result =>{
+                    if(result.data.success == true){
+                        alert(result.data.message)
+                    }else{
+                        alert(result.data.message)
+                    }
+                })
+            }
+        },
+        //生命周期钩子函数
+        mounted() {
+        },
+    })
+</script>
+<style>
+
+</style>

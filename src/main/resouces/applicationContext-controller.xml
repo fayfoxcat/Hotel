@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!--1、配置视图解析器-->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/html/views"></property>
+		<property name="suffix" value=".html"></property>
+	</bean>
+
+	<!--文件上传解析器-->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8"></property>
+		<!--限制文件大小：1024*1024*20=20M-->
+		<property name="maxUploadSize" value="20971520"></property>
+		<property name="maxInMemorySize" value="20971520"></property>
+	</bean>
+
+	<!--2.静态资源默认servlet配置 (1)加入对静态资源的处理 ：js，gif，png (2)允许使用"/"做整体 -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:default-servlet-handler />
+	
+	<!--3、将控制器所在包 加入IOC容器 -->
+	<context:component-scan base-package="org.fox.*"/>
+
+	<!--、SpringMVC的基础配置：标配  -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+
+	<!--&lt;!&ndash; 配置事务管理器 &ndash;&gt;
+	<bean id="transactionManager"
+		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		&lt;!&ndash; 注入数据库连接池 &ndash;&gt;
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	&lt;!&ndash; 配置基于注解的声明式事务 &ndash;&gt;
+	<tx:annotation-driven transaction-manager="transactionManager" />-->
+</beans>
